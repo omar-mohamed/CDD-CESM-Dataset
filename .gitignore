@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+checkpoints/train/checkpoint
+checkpoints/
+data/images/
+saved_model/
+*.jpg
