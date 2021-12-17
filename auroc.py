@@ -5,19 +5,22 @@ import os
 import shutil
 from tensorflow.keras.callbacks import Callback
 from sklearn.metrics import precision_recall_fscore_support, average_precision_score, accuracy_score, hamming_loss, \
-     roc_auc_score
+    roc_auc_score
+
 
 class MultipleClassAUROC(Callback):
     """
     Monitor mean AUROC and update model
     """
-    def __init__(self, sequence, class_names, weights_path,output_weights_path,confidence_thresh=0.5, stats=None, workers=1):
+
+    def __init__(self, sequence, class_names, weights_path, output_weights_path, confidence_thresh=0.5, stats=None,
+                 workers=1):
         super(Callback, self).__init__()
         self.sequence = sequence
         self.workers = workers
         self.class_names = class_names
         self.weights_path = weights_path
-        self.confidence_thresh=confidence_thresh
+        self.confidence_thresh = confidence_thresh
         self.best_weights_path = os.path.join(
             os.path.split(weights_path)[0],
             f"{os.path.split(output_weights_path)[1]}",
@@ -57,7 +60,6 @@ class MultipleClassAUROC(Callback):
         y_hat = self.model.predict(self.sequence, workers=self.workers)
         y = self.sequence.get_y_true()
 
-
         print(f"*** epoch#{epoch + 1} dev auroc ***")
         current_auroc = []
         for i in range(len(self.class_names)):
@@ -67,10 +69,11 @@ class MultipleClassAUROC(Callback):
                 score = 0
             self.aurocs[self.class_names[i]].append(score)
             current_auroc.append(score)
-            print(f"{i+1}. {self.class_names[i]}: {score}")
+            print(f"{i + 1}. {self.class_names[i]}: {score}")
         print("*********************************")
 
-        prec, rec, fscore, support = precision_recall_fscore_support(y, y_hat >= self.confidence_thresh, average='macro')
+        prec, rec, fscore, support = precision_recall_fscore_support(y, y_hat >= self.confidence_thresh,
+                                                                     average='macro')
         AP = average_precision_score(y, y_hat)
         exact_accuracy = accuracy_score(y, y_hat >= self.confidence_thresh)
         ham_loss = hamming_loss(y, y_hat >= self.confidence_thresh)

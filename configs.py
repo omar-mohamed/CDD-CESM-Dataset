@@ -5,12 +5,12 @@ class argHandler(dict):
     _descriptions = {'help, --h, -h': 'show this super helpful message and exit'}
 
     def setDefaults(self):
-        self.define('train_csv', './data/all_data_pathology_latest.csv',
+        self.define('train_csv', './data/train_set.csv',
                     'path to training csv containing the images names and the labels')
-        self.define('test_csv', './data/testing_set_pathology.csv',
+        self.define('test_csv', './data/test_set.csv',
                     'path to testing csv containing the images names and the labels')
-        self.define('image_directory', './data/images_rana_cropped_224',
-                    'path to folder containing the patient folders which containg the images')
+        self.define('image_directory', './data/images',
+                    'path to folder containing the patient folders which contains the images')
         self.define('visual_model_name', 'EfficientNetB0',
                     'select from (VGG16, VGG19, DenseNet121, DenseNet169, DenseNet201, Xception, ResNet50, ResNet101, ResNet152, ResNet50V2, ResNet101V2, ResNet152V2, InceptionV3, InceptionResNetV2, NASNetMobile, NASNetLarge, MobileNet, MobileNetV2, EfficientNetB0 to EfficientNetB7). Note that the classifier layer is removed by default.')
         self.define('use_chexnet_weights', True,
@@ -25,7 +25,7 @@ class argHandler(dict):
         self.define('multi_label_classification', False,
                     'determines if this is a multi classification problem or not. It affects the loss function')
 
-        self.define('classifier_layer_sizes', [0.9],
+        self.define('classifier_layer_sizes', [0.4],
                     'a list describing the hidden layers of the classifier. Example [10,0.4,5] will create a hidden layer with size 10 then dropout wth drop prob 0.4, then hidden layer with size 5. If empty it will connect to output nodes directly.')
         self.define('conv_layers_to_train', -1,
                     'the number of layers that should be trained in the visual model counting from the end. -1 means train all and 0 means freezing the visual model')
@@ -33,9 +33,9 @@ class argHandler(dict):
         self.define('pop_conv_layers', 1,
                     'number of layers to be popped from the visual model. Note that the imagenet classifier is removed by default so you should not take them into considaration')
         self.define('final_layer_pooling', 'avg', 'the pooling to be used as a final layer to the visual model')
-        self.define('load_model_path', './saved_models/pathology_all_efficientb0_2_224/best_model.hdf5',
+        self.define('load_model_path', '',
                     'a path containing the checkpoints. If provided with load_model_name the system will continue the training from that point or use it in testing.')
-        self.define('save_model_path', './saved_models/pathology_all_efficientb0_2_224',
+        self.define('save_model_path', './saved_models/model1',
                     'where to save the checkpoints. The path will be created if it does not exist. The system saves every epoch by default')
         self.define('save_best_model_only', True,
                     'Only save the best weights on validation loss')
@@ -48,7 +48,7 @@ class argHandler(dict):
         self.define('multilabel_threshold', 0.5,
                     'The threshold from which to detect a class. Only used with multi label classification.')
         self.define('generator_workers', 4, 'The number of cpu workers generating batches.')
-        self.define('generator_queue_length', 6, 'The maximum number of batches in the queue to be trained on.')
+        self.define('generator_queue_length', 12, 'The maximum number of batches in the queue to be trained on.')
         self.define('minimum_learning_rate', 1e-7, 'The minimum possible learning rate when decaying')
         self.define('reduce_lr_patience', 3,
                     'The number of epochs to reduce the learning rate when validation loss is not decreasing')

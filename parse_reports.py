@@ -6,12 +6,13 @@ import os
 
 patient_reports = {}
 
+
 def parse_report(patient_id, report_lines):
     global patient_reports
     mode = ''
     side = ''
     for line in report_lines:
-        if line[:4] == 'acr ' or line[:11] =='patient no.':
+        if line[:4] == 'acr ' or line[:11] == 'patient no.':
             continue
         if line == 'left breast:':
             side = 'L'
@@ -30,15 +31,15 @@ def parse_report(patient_id, report_lines):
             else:
                 patient_reports[image_name] = line
 
-report_csv = {"Image_name":[],"report":[]}
+
+report_csv = {"Image_name": [], "report": [], "opinion": []}
 
 for filepath in glob('./reports/Medical reports/*.docx'):
-    if os.path.basename(filepath)[0]=='~':
+    if os.path.basename(filepath)[0] == '~':
         continue
     print(filepath)
     report = docx2txt.process(filepath)
     patient_id = os.path.basename(filepath)[1:-5]
-    # lines = report.split('\n')
     report_lines = [line.strip().lower() for line in report.split('\n') if line.strip() != '']
     parse_report(patient_id, report_lines)
 
@@ -46,16 +47,16 @@ dataset_df = pd.read_excel('./reports/annotations.xlsx')
 
 for index, row in dataset_df.iterrows():
     image_name = row['Image_name']
+    report = patient_reports['_'.join(image_name.split('_')[:3])]
+    opinion_key = ('_'.join(image_name.split('_')[:3]) + '_OPINION')
+    if opinion_key in patient_reports:
+        opinion = patient_reports[opinion_key]
+    else:
+        opinion = ''
     report_csv['Image_name'].append(image_name)
-    report = 'startseq ' + patient_reports['_'.join(image_name.split('_')[:3])] + ' endseq'
     report_csv['report'].append(report)
+    report_csv['opinion'].append(opinion)
 
+df = pd.DataFrame(report_csv)
 
-df=pd.DataFrame(report_csv)
-
-df.to_csv(os.path.join("./reports","reports.csv"), index=False)
-
-
-
-
-
+df.to_csv(os.path.join("./reports", "reports.csv"), index=False)

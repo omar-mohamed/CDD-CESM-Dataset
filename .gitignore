@@ -5,3 +5,4 @@ checkpoints/
 data/images/
 saved_model/
 *.jpg
+*.docx
