@@ -18,7 +18,7 @@ class argHandler(dict):
         self.define('chexnet_weights_path', 'pretrained_models/chexnet_densenet121_weights.h5', 'chexnet weights path')
         self.define('image_target_size', (224, 224, 3), 'the target size to resize the image')
         self.define('num_epochs', 100, 'maximum number of epochs')
-        self.define('csv_label_columns', ['Pathology Classification'], 'the name of the label columns in the csv')
+        self.define('csv_label_columns', ['Pathology Classification/ Follow up'], 'the name of the label columns in the csv')
         self.define('classes', ['Normal', 'Benign', 'Malignant'],
                     'the names of the output classes')
 
