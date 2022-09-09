@@ -1,5 +1,5 @@
 # CDD-CESM-Dataset
-This is a helper repository for the CDD-CESM Dataset containing all the tools for pre-processing and segmentation model
+This is a helper repository for the CDD-CESM Mammogram Dataset containing all the tools for pre-processing and segmentation model
 
 Dataset Link: [here](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=109379611#109379611bcab02c187174a288dbcbf95d26179e8)
 
