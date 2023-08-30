@@ -8,8 +8,8 @@ Paper Link: [here](https://www.nature.com/articles/s41597-022-01238-0)
 <img src="https://user-images.githubusercontent.com/6074821/161619916-46594309-48cd-4853-b56b-7f5c08d2ab8b.png" width="400" height="400">
 
 ## Installation & Usage
-
-- pip install -r requirements.txt
+*The project was tested on a virtual environment of python 3.7, pip 23.2.1, and MacOS*
+- pip install -r full_requirements.txt (or pip install -r requirements.txt if there are errors because of using a different operating system, as requirements.txt only contains the main dependencies and pip will fetch the compatible sub-dependencies, but it will be slower)
 - Download dataset
 - Put the images inside ```dataset/images```
 - split annotations into ```dataset/train_set.csv``` and ```dataset/test_set.csv```
